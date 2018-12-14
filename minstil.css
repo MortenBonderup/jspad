@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.hovedindhold {
+    display: flex;
+    justify-content: center;
+}
+
+.rammesektion {
+    margin-top: 25px;
+    width: 45%;
+    display: inline-block;
+}
+
+.rammeindhold {
+    display: flex;
+    width: 90%;
+    justify-content:space-between;
+}
+
+.rammetekst {
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: small;
+    width:100px;
+    color: white;
+    font-weight:bold;
+    background-color:steelblue;
+    text-align: center;
+    line-height: 2;
+    height: 25px;
+}
+
+.ramme {
+    margin-top: 5px;
+    width: 90%;
+    height: 400px;
+}
+
+.knap {
+    height: 25px;
+}
+
+
+
+

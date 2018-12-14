@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Outputomraade</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+           
+            window.onerror = function (msg, url, linenumber) {
+                 var div = document.getElementById('problemomraade');
+                /* PROBLEM: Den laver jo en ny side */
+                // document.write("Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber);
+                // div.innerHTML += "Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber + "<br>";
+                div.innerHTML += "Error message: " + msg;
+                return true;
+            };
+        </script>
+    </head>
+    <body>
+        <div id="problemomraade"></div>
+        <div id="documentwrite"></div>
+
+    </body>
+</html>
