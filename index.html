@@ -14,7 +14,8 @@
                 <div class="rammeindhold">
                     <nav>
                         <!-- <button class="knap" onclick="execCmd(this, 'underline');">&nbsp;<i class="fas fa-save"></i>&nbsp;Gem&nbsp;</button> -->
-                        <button class="knap" onclick="fjernFejlmeddelelser();injectJs(erstatWrite(fjernHTMLtags('redigeringsomraade')));">&nbsp;<i class="far fa-play-circle"></i>&nbsp;Kør JavaScript&nbsp;</button>
+                        <!-- <button class="knap" onclick="fjernFejlmeddelelser();injectJs(erstatWrite(fjernHTMLtags('redigeringsomraade')));execKonsol(erstatWrite(fjernHTMLtags('redigeringsomraade')));">&nbsp;<i class="far fa-play-circle"></i>&nbsp;Kør JavaScript&nbsp;</button> -->
+                        <button class="knap" onclick="fjernFejlmeddelelser();execKonsol(erstatWrite(fjernHTMLtags('redigeringsomraade')));">&nbsp;<i class="far fa-play-circle"></i>&nbsp;Kør JavaScript&nbsp;</button>
                         <!-- <button onclick="execCmd(this, 'copy');"><i class="fas fa-copy"></i>&nbsp;Kopier alt til udklipsholder</button> -->
                     </nav>
                     <div class="rammetekst">
@@ -33,7 +34,18 @@
                     </div>
                 </div>
                 <iframe name="outputomraade" id="outputomraade" src="output.html" class="ramme"></iframe>
+            </section>
 
+            <section class="konsolrammesektion">
+                <div class="rammeindhold">
+                    <nav >
+                        <button class="knap" onclick="rensKonsolomraade();"><i class="fas fa-eraser">&nbsp;</i>&nbsp;Ryd konsol&nbsp;</button>
+                    </nav>
+                    <div class="rammetekst">
+                        Konsol
+                    </div>
+                </div>
+                <iframe name="konsolomraade" id="konsolomraade" src="konsol.html" class="konsolramme"></iframe>
             </section>
         </main>
         <script>
@@ -61,6 +73,10 @@
                 richTextField.document.execCommand(command, false, null);
             }
 
+            function rensKonsolomraade() {
+                window.frames['konsolomraade'].location.replace("konsol.html");
+            }
+
             function rensJsOutputomraade() {
                 window.frames['outputomraade'].location.replace("output.html");
             }
@@ -71,25 +87,39 @@
 
                 var iFrameResultat = window.frames["outputomraade"].document.getElementById("documentwrite");
                 iFrameResultat.innerHTML = "";
+                
             }
 
             function injectJs(js) {
+
+                // Der skal ikke oprettes en nyt element hver gang der
+                // køres javascript
                 var iFrameBody = window.frames["outputomraade"].document.getElementsByTagName("body")[0];
                 var myscript = document.createElement('script');
-                myscript.setAttribute("id", "scriptomraade")
-                //myscript.async = true;
-                scripttxt = 'try {';
+                myscript.setAttribute("id", "scriptomraade");
+                var scripttxt = 'try {';
                 scripttxt += js;
                 scripttxt += '} catch(err) { ';
                 scripttxt += 'var div = document.getElementById("problemomraade");';
                 scripttxt += 'div.innerHTML += "<br>"+err; }';
-                //document.write("<br>"+err); }'; /* Problem: Den laver en ny side */
                 myscript.innerHTML = scripttxt;
                 iFrameBody.appendChild(myscript);
             }
 
+            function execKonsol(js) {
+                var scripttxt = 'try {';
+                scripttxt += js;
+                scripttxt += '} catch(err) { ';
+                scripttxt += 'var div = document.getElementById("problemomraade");';
+                scripttxt += 'div.innerHTML += "<br>"+err; }';
+
+                var iFrameKonsol = window.frames["konsolomraade"].document.getElementById("scriptomraade");
+                iFrameKonsol.innerHTML = scripttxt;
+            }
+
             document.getElementById("redigeringsomraade").contentDocument.body.style.fontFamily = "Lucida Console, Monaco, monospace";
             document.getElementById("outputomraade").contentDocument.body.style.fontFamily = "Lucida Console, Monaco, monospace";
+            document.getElementById("konsolomraade").contentDocument.body.style.fontFamily = "Lucida Console, Monaco, monospace";
             document.getElementById("redigeringsomraade").focus();
 
         </script>

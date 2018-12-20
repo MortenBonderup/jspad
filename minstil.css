@@ -6,6 +6,7 @@
 .hovedindhold {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .rammesektion {
@@ -35,7 +36,18 @@
 .ramme {
     margin-top: 5px;
     width: 90%;
-    height: 400px;
+    height: 300px;
+}
+
+.konsolramme {
+    margin-top: 5px;
+    width: 90%;
+    height: 100px;
+}
+
+.konsolrammesektion {
+    margin-top: 15px;
+    width: 80%;
 }
 
 .knap {

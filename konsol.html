@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Konsol</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script>
+           if (typeof console != "undefined")
+                if (typeof console.log != 'undefined')
+                    console.olog = console.log;
+                else
+                    console.olog = function () {};
+
+            console.log = function (message) {
+                console.olog(message);
+                $('#konsol').append('<p>' + message + '</p>');
+            };
+            console.error = console.debug = console.info = console.log;
+
+        </script>
+    </head>
+    <body>
+        <div id="problemomraade"></div>
+        <div id="documentwrite" style="display: none;"></div>
+        <div id="konsol"></div>
+
+        <script id="scriptomraade"></script>
+    </body>
+</html>
