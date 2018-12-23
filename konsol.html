@@ -5,20 +5,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script>
-           if (typeof console != "undefined")
-                if (typeof console.log != 'undefined')
-                    console.olog = console.log;
-                else
-                    console.olog = function () {};
-
-            console.log = function (message) {
-                console.olog(message);
-                $('#konsol').append('<p>' + message + '</p>');
-            };
-            console.error = console.debug = console.info = console.log;
-
-        </script>
     </head>
     <body>
         <div id="problemomraade"></div>
@@ -26,5 +12,36 @@
         <div id="konsol"></div>
 
         <script id="scriptomraade"></script>
+
+        <script>
+            /* if (typeof console != "undefined")
+             if (typeof console.log != 'undefined')
+             console.olog = console.log;
+             else
+             console.olog = function () {};
+                     
+             console.log = function (message) {
+             console.olog(message);
+             $('#konsol').append('<p>' + message + '</p>');
+             };
+             console.error = console.debug = console.info = console.log; */
+
+            // Overriding console object
+            var console = {};
+
+            // Getting div to insert logs
+            var logger = document.getElementById("konsol");
+
+            // Adding log method from our console object
+            console.log = function (text)
+            {
+                var element = document.createElement("div");
+                var txt = document.createTextNode(text);
+
+                element.appendChild(txt);
+                logger.appendChild(element);
+            }
+
+        </script>
     </body>
 </html>
