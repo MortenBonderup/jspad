@@ -7,6 +7,7 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    font-family: "Lucida Console, Monaco, monospace";
 }
 
 .rammesektion {

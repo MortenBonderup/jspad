@@ -8,13 +8,17 @@
 
             window.onerror = function (msg, url, linenumber) {
                 var div = document.getElementById('problemomraade');
-                /* PROBLEM: Den laver jo en ny side */
-                // document.write("Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber);
-                // div.innerHTML += "Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber + "<br>";
                 div.innerHTML += "Error message: " + msg;
                 return true;
             };
         </script>
+
+        <style>
+            body {
+                font-family: "Lucida Console", Monaco, monospace;
+            }
+        </style>
+
     </head>
     <body>
         <div id="problemomraade"></div>

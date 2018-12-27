@@ -7,28 +7,24 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
         <link rel="stylesheet" href="minstil.css">
     </head>
-    <body onload="enableEditMode();">
+    <body>
 
         <main class="hovedindhold">
             <section class="rammesektion">
                 <div class="rammeindhold">
                     <nav>
-                        <!-- <button class="knap" onclick="execCmd(this, 'underline');">&nbsp;<i class="fas fa-save"></i>&nbsp;Gem&nbsp;</button> -->
-                        <!-- <button class="knap" onclick="fjernFejlmeddelelser();injectJs(erstatWrite(fjernHTMLtags('redigeringsomraade')));execKonsol(erstatWrite(fjernHTMLtags('redigeringsomraade')));">&nbsp;<i class="far fa-play-circle"></i>&nbsp;Kør JavaScript&nbsp;</button> -->
-                        <!-- <button class="knap" onclick="fjernFejlmeddelelser();execKonsol(erstatWrite(fjernHTMLtags('redigeringsomraade')));">&nbsp;<i class="far fa-play-circle"></i>&nbsp;Kør JavaScript&nbsp;</button> -->
-                        <button class="knap" id="execJs">&nbsp;<i class="far fa-play-circle"></i>&nbsp;Kør JavaScript&nbsp;</button>
-                        <!-- <button onclick="execCmd(this, 'copy');"><i class="fas fa-copy"></i>&nbsp;Kopier alt til udklipsholder</button> -->
+                        <button class="knap execJs">&nbsp;<i class="far fa-play-circle"></i>&nbsp;Kør JavaScript&nbsp;</button>
                     </nav>
                     <div class="rammetekst">
                         JavaScript
                     </div>
                 </div>
-                <iframe name="richTextField" id="redigeringsomraade" src="about:blank" class="ramme"></iframe>
+                <iframe name="redigeringsomraade" id="redigeringsomraade" src="about:blank" class="ramme"></iframe>
             </section>
             <section class="rammesektion">
                 <div class="rammeindhold">
                     <nav >
-                        <button class="knap" onclick="rensJsOutputomraade();"><i class="fas fa-eraser">&nbsp;</i>&nbsp;Ryd resultatvindue&nbsp;</button>
+                        <button class="knap rydresultat">&nbsp;<i class="fas fa-eraser"></i>&nbsp;Ryd resultatvindue&nbsp;</button>
                     </nav>
                     <div class="rammetekst">
                         Resultat
@@ -40,7 +36,7 @@
             <section class="konsolrammesektion">
                 <div class="rammeindhold">
                     <nav >
-                        <button class="knap" onclick="rensKonsolomraade();"><i class="fas fa-eraser">&nbsp;</i>&nbsp;Ryd konsolvindue&nbsp;</button>
+                        <button class="knap rydkonsol">&nbsp;<i class="fas fa-eraser"></i>&nbsp;Ryd konsolvindue&nbsp;</button>
                     </nav>
                     <div class="rammetekst">
                         Konsol
@@ -49,111 +45,8 @@
                 <iframe name="konsolomraade" id="konsolomraade" src="konsol.html" class="konsolramme"></iframe>
             </section>
         </main>
-        <script>
-
-            function fjernHTMLtags(frameId) {
-                var frameObj = document.getElementById(frameId);
-                var frameContent = frameObj.contentWindow.document.body.innerHTML;
-                //var frameContent = frameObj.contentWindow.document.body.innerText;
-                return frameContent.replace(/(<([^>]+)>)/ig, "");
-                //return decodeURIComponent(frameContent);
-            }
-
-            function erstatWrite(js) {
-                var pattern = /document.writeln\(/gi;
-                var res = js.replace(pattern, "documentwrite.insertAdjacentText('beforeend',");
-                pattern = /document.write\(/gi;
-                var slutres = res.replace(pattern, "documentwrite.insertAdjacentText('beforeend',");
-                return slutres;
-            }
-
-            function enableEditMode() {
-                richTextField.document.designMode = "On";
-            }
-
-            function execCmd(btnElement, command) {
-                document.getElementById("redigeringsomraade").focus();
-                richTextField.document.execCommand(command, false, null);
-            }
-
-            function rensKonsolomraade() {
-                window.frames['konsolomraade'].location.replace("konsol.html");
-            }
-
-            function rensJsOutputomraade() {
-                window.frames['outputomraade'].location.replace("output.html");
-            }
-
-            function fjernFejlmeddelelser() {
-                var iFrameProblem = window.frames["outputomraade"].document.getElementById("problemomraade");
-                iFrameProblem.innerHTML = "";
-
-                var iFrameResultat = window.frames["outputomraade"].document.getElementById("documentwrite");
-                iFrameResultat.innerHTML = "";
-
-                var iFrameKonsol = window.frames["konsolomraade"].document.getElementById("konsol");
-                iFrameKonsol.innerText = "";
-
-            }
-
-            function injectJs(js) {
-
-                // ---slet script div---
-                var iFrame = document.getElementById("outputomraade");
-                var innerDoc = iFrame.contentDocument || iFrame.contentWindow.document;
-                var element = innerDoc.getElementById("scriptomraade");
-                element.parentNode.removeChild(element);
-                // slet script div slut
-                
-                
-                var iFrameBody = window.frames["outputomraade"].document.getElementsByTagName("body")[0];
-                var myscript = document.createElement('script');
-                myscript.setAttribute("id", "scriptomraade");
-                var scripttxt = 'try {';
-                scripttxt += js;
-                scripttxt += '} catch(err) { ';
-                scripttxt += 'var div = document.getElementById("problemomraade");';
-                scripttxt += 'div.innerHTML += "<br>"+err; }';
-                //myscript.innerHTML = scripttxt;
-                myscript.innerText = scripttxt;
-                iFrameBody.appendChild(myscript);
-            }
-
-            function execKonsol(js) {
-                // ---slet script div---
-                var iFrame = document.getElementById("konsolomraade");
-                var innerDoc = iFrame.contentDocument || iFrame.contentWindow.document;
-                var element = innerDoc.getElementById("scriptomraade");
-                element.parentNode.removeChild(element);
-                // slet script div slut
-                
-                var iFrameBody = window.frames["konsolomraade"].document.getElementsByTagName("body")[0];
-                var myscript = document.createElement('script');
-                myscript.setAttribute("id", "scriptomraade");
-                var scripttxt = 'try {';
-                scripttxt += js;
-                scripttxt += '} catch(err) { ';
-                scripttxt += 'var div = document.getElementById("problemomraade");';
-                scripttxt += 'div.innerHTML += "<br>"+err; }';
-
-                //var iFrameKonsol = window.frames["konsolomraade"].document.getElementById("scriptomraade");
-                //myscript.innerHTML = scripttxt;
-                myscript.innerText = scripttxt;
-                iFrameBody.appendChild(myscript);
-            }
-
-            document.getElementById("redigeringsomraade").contentDocument.body.style.fontFamily = "Lucida Console, Monaco, monospace";
-            document.getElementById("outputomraade").contentDocument.body.style.fontFamily = "Lucida Console, Monaco, monospace";
-            document.getElementById("konsolomraade").contentDocument.body.style.fontFamily = "Lucida Console, Monaco, monospace";
-            document.getElementById("redigeringsomraade").focus();
-            
-            execJs.addEventListener("click", function() {
-                fjernFejlmeddelelser();
-                execKonsol(erstatWrite(fjernHTMLtags('redigeringsomraade')));
-                injectJs(erstatWrite(fjernHTMLtags('redigeringsomraade')));
-            });
-
-        </script>
+        
+        <script src="mitjs.js"></script>
 
     </body>
 </html>
