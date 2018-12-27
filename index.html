@@ -12,9 +12,10 @@
         <main class="hovedindhold">
             <section class="rammesektion">
                 <div class="rammeindhold">
-                    <nav>
-                        <button class="knap execJs">&nbsp;<i class="far fa-play-circle"></i>&nbsp;Kør JavaScript&nbsp;</button>
-                    </nav>
+                    <div>
+                    <button class="knap hentEksempel">&nbsp;<i class="fas fa-file-download"></i>&nbsp;Indlæs eksempel&nbsp;</button>
+                    <button class="knap execJs">&nbsp;<i class="far fa-play-circle"></i>&nbsp;Kør JavaScript&nbsp;</button>
+                    </div>
                     <div class="rammetekst">
                         JavaScript
                     </div>
@@ -23,29 +24,30 @@
             </section>
             <section class="rammesektion">
                 <div class="rammeindhold">
-                    <nav >
-                        <button class="knap rydresultat">&nbsp;<i class="fas fa-eraser"></i>&nbsp;Ryd resultatvindue&nbsp;</button>
-                    </nav>
-                    <div class="rammetekst">
-                        Resultat
-                    </div>
-                </div>
-                <iframe name="outputomraade" id="outputomraade" src="output.html" class="ramme"></iframe>
-            </section>
 
-            <section class="konsolrammesektion">
-                <div class="rammeindhold">
-                    <nav >
-                        <button class="knap rydkonsol">&nbsp;<i class="fas fa-eraser"></i>&nbsp;Ryd konsolvindue&nbsp;</button>
-                    </nav>
+                    <button class="knap rydkonsol">&nbsp;<i class="fas fa-eraser"></i>&nbsp;Ryd konsolvindue&nbsp;</button>
+
                     <div class="rammetekst">
                         Konsol
                     </div>
                 </div>
-                <iframe name="konsolomraade" id="konsolomraade" src="konsol.html" class="konsolramme"></iframe>
+                <iframe name="konsolomraade" id="konsolomraade" src="konsol.html" class="ramme"></iframe>
+
+            </section>
+
+            <section class="resultatrammesektion">
+                <div class="rammeindhold">
+
+                    <button class="knap rydresultat">&nbsp;<i class="fas fa-eraser"></i>&nbsp;Ryd resultatvindue&nbsp;</button>
+
+                    <div class="rammetekst">
+                        Resultat
+                    </div>
+                </div>
+                <iframe name="outputomraade" id="outputomraade" src="output.html" class="resultatramme"></iframe>
             </section>
         </main>
-        
+
         <script src="mitjs.js"></script>
 
     </body>

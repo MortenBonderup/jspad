@@ -8,7 +8,7 @@
 
             window.onerror = function (msg, url, linenumber) {
                 var div = document.getElementById('problemomraade');
-                div.innerHTML += "Error message: " + msg;
+                div.innerHTML += "<p>Fejl: " + msg + "</p>";
                 return true;
             };
         </script>
@@ -16,6 +16,16 @@
         <style>
             body {
                 font-family: "Lucida Console", Monaco, monospace;
+            }
+
+            span {
+                display: block;
+                line-height: 2;
+                color: green;
+            }
+
+            p {
+                color: red;
             }
         </style>
 

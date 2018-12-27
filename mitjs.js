@@ -1,24 +1,27 @@
+"use strict";
 const frameObj = document.getElementById("redigeringsomraade");
+const eksempel = 'var a=5;<br>console.log(a);';
 
 function erstatWrite(js) {
-    var pattern = /document.writeln\(/gi;
-    var res = js.replace(pattern, "documentwrite.insertAdjacentText('beforeend',");
-    pattern = /document.write\(/gi;
-    var slutres = res.replace(pattern, "documentwrite.insertAdjacentText('beforeend',");
+    const writeln = /document.writeln\(/gi;
+    const write = /document.write\(/gi;
+    
+    const res = js.replace(writeln, "documentwrite.insertAdjacentText('beforeend',");
+    const slutres = res.replace(write, "documentwrite.insertAdjacentText('beforeend',");
     return slutres;
 }
 
 function fjernIndhold() {
-    var iFrameProblem = window.frames["outputomraade"].document.getElementById("problemomraade");
+    const iFrameProblem = window.frames["outputomraade"].document.getElementById("problemomraade");
     iFrameProblem.innerHTML = "";
 
-    var iFrameResultat = window.frames["outputomraade"].document.getElementById("documentwrite");
+    const iFrameResultat = window.frames["outputomraade"].document.getElementById("documentwrite");
     iFrameResultat.innerHTML = "";
 
-    var iFrameKonsol = window.frames["konsolomraade"].document.getElementById("konsol");
+    const iFrameKonsol = window.frames["konsolomraade"].document.getElementById("konsol");
     iFrameKonsol.innerHTML = "";
 
-    var iFrameKonsolDocW = window.frames["konsolomraade"].document.getElementById("documentwrite");
+    const iFrameKonsolDocW = window.frames["konsolomraade"].document.getElementById("documentwrite");
     iFrameKonsolDocW.innerHTML = "";
 }
 
@@ -28,30 +31,36 @@ function injectJs(js) {
     omraadeliste.forEach(function (omraade) {
 
         // ---slet eksisterende script div---
-        var iFrame = document.getElementById(omraade);
-        var innerDoc = iFrame.contentDocument || iFrame.contentWindow.document;
-        var element = innerDoc.getElementById("scriptomraade");
+        const iFrame = document.getElementById(omraade);
+        const innerDoc = iFrame.contentDocument || iFrame.contentWindow.document;
+        const element = innerDoc.getElementById("scriptomraade");
         element.parentNode.removeChild(element);
         // slet eksisterende script div slut
 
-        var iFrameBody = iFrame.contentWindow.document.body;
-        var myscript = document.createElement('script');
+        const iFrameBody = iFrame.contentWindow.document.body;
+        const myscript = document.createElement('script');
         myscript.setAttribute("id", "scriptomraade");
-        var scripttxt = 'try {';
+        var scripttxt = 'var fejl = false;';
+        scripttxt += 'try {';
         scripttxt += js;
         scripttxt += '} catch(err) { ';
+        scripttxt += 'fejl=true;';
         scripttxt += 'var div = document.getElementById("problemomraade");';
-        scripttxt += 'div.innerHTML += "<br>"+err; }';
+        scripttxt += 'div.innerHTML += "<p>"+err+"</p>"; }';
+        scripttxt += 'finally {';
+        scripttxt += 'if (!fejl) {';
+        scripttxt += 'var div = document.getElementById("documentwrite");';
+        scripttxt += 'div.innerHTML += "<span>Instruktioner udført med succes!</span>";';
+        scripttxt += '}}';
         myscript.textContent = scripttxt;
         iFrameBody.appendChild(myscript);
-        
+
     });
 }
 
-
 document.addEventListener('click', function (event) {
     if (event.target.classList.contains('execJs')) {
-        var frameContent = frameObj.contentWindow.document.body.textContent;
+        const frameContent = frameObj.contentWindow.document.body.textContent;
         fjernIndhold();
         injectJs(erstatWrite(frameContent));
     }
@@ -64,6 +73,11 @@ document.addEventListener('click', function (event) {
         window.frames['outputomraade'].location.replace("output.html");
     }
 
+    if (event.target.classList.contains('hentEksempel')) {
+        const iFrameBody = frameObj.contentWindow.document.body;
+        iFrameBody.innerHTML = eksempel;
+    }
+
 }, false);
 
 window.addEventListener("load", function (event) {
@@ -71,5 +85,3 @@ window.addEventListener("load", function (event) {
     document.getElementById("redigeringsomraade").contentDocument.body.style.fontFamily = "Lucida Console, Monaco, monospace";
     redigeringsomraade.focus();
 });
-
-
