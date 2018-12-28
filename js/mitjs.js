@@ -1,11 +1,28 @@
 "use strict";
-const frameObj = document.getElementById("redigeringsomraade");
-const eksempel = 'var a=5;<br>console.log(a);';
+
+function derErDialog(js) {
+
+    if (js.search(/alert/gi) > -1) {
+        return true;
+    } else if (js.search(/confirm/gi) > -1) {
+        return true;
+    } else if (js.search(/prompt/gi) > -1) {
+        return true;
+    }
+
+    return false;
+}
+
+function erstatConsoleLog(js) {
+    const consolelog = /console.log\(/gi;
+    const slutres = js.replace(consolelog, "documentwrite.insertAdjacentText('beforeend',");
+    return slutres;
+}
 
 function erstatWrite(js) {
     const writeln = /document.writeln\(/gi;
     const write = /document.write\(/gi;
-    
+
     const res = js.replace(writeln, "documentwrite.insertAdjacentText('beforeend',");
     const slutres = res.replace(write, "documentwrite.insertAdjacentText('beforeend',");
     return slutres;
@@ -25,8 +42,8 @@ function fjernIndhold() {
     iFrameKonsolDocW.innerHTML = "";
 }
 
-function injectJs(js) {
-    const omraadeliste = ["outputomraade", "konsolomraade"];
+function injectJs(js, omraadeliste) {
+    //const omraadeliste = ["outputomraade", "konsolomraade"];
 
     omraadeliste.forEach(function (omraade) {
 
@@ -59,10 +76,22 @@ function injectJs(js) {
 }
 
 document.addEventListener('click', function (event) {
+    var omraadeliste = ["outputomraade", "konsolomraade"];
+    const frameObj = document.getElementById("redigeringsomraade");
+    const eksempel = 'var a=5;<br>console.log(a);';
+
     if (event.target.classList.contains('execJs')) {
         const frameContent = frameObj.contentWindow.document.body.textContent;
         fjernIndhold();
-        injectJs(erstatWrite(frameContent));
+
+        if (derErDialog(frameContent)) {
+            const iFrameKonsol = window.frames["konsolomraade"].document.getElementById("konsol");
+            iFrameKonsol.innerHTML = "Når du bruger JavaScript dialogbokse i dit script (alert, confirm eller prompt), er konsolvinduet IKKE aktivt.";
+            omraadeliste = ["outputomraade"];
+            injectJs(erstatWrite(erstatConsoleLog(frameContent)), omraadeliste);
+        } else {
+            injectJs(erstatWrite(frameContent), omraadeliste);
+        }
     }
 
     if (event.target.classList.contains('rydkonsol')) {
@@ -74,8 +103,11 @@ document.addEventListener('click', function (event) {
     }
 
     if (event.target.classList.contains('hentEksempel')) {
-        const iFrameBody = frameObj.contentWindow.document.body;
-        iFrameBody.innerHTML = eksempel;
+        const ok = confirm("Overskriv eksisterende JavaScript ?");
+        if (ok) {
+            const iFrameBody = frameObj.contentWindow.document.body;
+            iFrameBody.innerHTML = eksempel;
+        }
     }
 
 }, false);

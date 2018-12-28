@@ -21,11 +21,8 @@
 
         <script>
             var console = {};
-
-            // Getting div to insert logs
             var logger = document.getElementById("konsol");
 
-            // Adding log method from our console object
             console.log = function (text)
             {
                 var element = document.createElement("div");
@@ -33,7 +30,7 @@
 
                 element.appendChild(txt);
                 logger.appendChild(element);
-            }
+            };
 
         </script>
     </body>

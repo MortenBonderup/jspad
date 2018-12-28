@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-        <link rel="stylesheet" href="minstil.css">
+        <link rel="stylesheet" href="css/minstil.css">
     </head>
     <body>
 
@@ -13,14 +13,14 @@
             <section class="rammesektion">
                 <div class="rammeindhold">
                     <div>
-                    <button class="knap hentEksempel">&nbsp;<i class="fas fa-file-download"></i>&nbsp;Indlæs eksempel&nbsp;</button>
-                    <button class="knap execJs">&nbsp;<i class="far fa-play-circle"></i>&nbsp;Kør JavaScript&nbsp;</button>
+                        <button class="knap hentEksempel">&nbsp;<i class="fas fa-file-download"></i>&nbsp;Indlæs eksempel&nbsp;</button>
+                        <button class="knap execJs">&nbsp;<i class="far fa-play-circle"></i>&nbsp;Kør JavaScript&nbsp;</button>
                     </div>
                     <div class="rammetekst">
                         JavaScript
                     </div>
                 </div>
-                <iframe name="redigeringsomraade" id="redigeringsomraade" src="about:blank" class="ramme"></iframe>
+                <iframe name="redigeringsomraade" id="redigeringsomraade" src="about:blank" class="ramme" sandbox="allow-same-origin"></iframe>
             </section>
             <section class="rammesektion">
                 <div class="rammeindhold">
@@ -31,7 +31,7 @@
                         Konsol
                     </div>
                 </div>
-                <iframe name="konsolomraade" id="konsolomraade" src="konsol.html" class="ramme"></iframe>
+                <iframe name="konsolomraade" id="konsolomraade" src="konsol.html" class="ramme" sandbox="allow-same-origin allow-scripts"></iframe>
 
             </section>
 
@@ -44,11 +44,11 @@
                         Resultat
                     </div>
                 </div>
-                <iframe name="outputomraade" id="outputomraade" src="output.html" class="resultatramme"></iframe>
+                <iframe name="outputomraade" id="outputomraade" src="output.html" class="resultatramme" sandbox="allow-same-origin allow-scripts allow-modals"></iframe>
             </section>
         </main>
 
-        <script src="mitjs.js"></script>
+        <script src="js/mitjs.js"></script>
 
     </body>
 </html>
