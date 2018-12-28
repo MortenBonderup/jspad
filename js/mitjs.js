@@ -78,7 +78,7 @@ function injectJs(js, omraadeliste) {
 document.addEventListener('click', function (event) {
     var omraadeliste = ["outputomraade", "konsolomraade"];
     const frameObj = document.getElementById("redigeringsomraade");
-    const eksempel = 'var a=5;<br>console.log(a);';
+    const eksempel='const medarbejdere = {<br>"Ib": 30000,<br>"Jens": 25000,<br>"Malene": 37000,<br>"Gitte": 23000<br>};<br><br>function loensum() {<br>let sum=0;<br>for (let maanedsloen of Object.values(medarbejdere)) {<br>	sum+=maanedsloen;<br>}<br>return sum;<br>}<br><br>function antalmedarb() {<br>	return Object.keys(medarbejdere).length;<br>}<br><br>function navneliste() {<br>let liste="";<br>for (let navn of Object.keys(medarbejdere)) {<br>	liste+=navn+" ";<br>}<br>return liste;<br>}<br><br>console.log("Information fra personaleafdelingen");<br>console.log("-----------------------------------");<br>console.log("Der er "+antalmedarb() +" medarbejdere, som i alt får ");<br>console.log("kr "+loensum()+" om måneden.");<br>console.log("Navneliste: "+navneliste());<br>';
 
     if (event.target.classList.contains('execJs')) {
         const frameContent = frameObj.contentWindow.document.body.textContent;
@@ -115,5 +115,6 @@ document.addEventListener('click', function (event) {
 window.addEventListener("load", function (event) {
     redigeringsomraade.document.designMode = "On";
     document.getElementById("redigeringsomraade").contentDocument.body.style.fontFamily = "Lucida Console, Monaco, monospace";
+    document.getElementById("redigeringsomraade").contentDocument.body.style.fontSize = "small";
     redigeringsomraade.focus();
 });
