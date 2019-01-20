@@ -13,6 +13,14 @@ function derErDialog(js) {
     return false;
 }
 
+function skafAntalKodelinjer(jshtml, js, separator) {
+    const linjer = jshtml.split(separator);
+    if (js.trim().length > 0)
+        return linjer.length;
+    else
+        return 0;
+}
+
 function erstatConsoleLog(js) {
     const consolelog = /console.log\(/gi;
     const slutres = js.replace(consolelog, "documentwrite.insertAdjacentText('beforeend',");
@@ -42,8 +50,7 @@ function fjernIndhold() {
     iFrameKonsolDocW.innerHTML = "";
 }
 
-function injectJs(js, omraadeliste) {
-    //const omraadeliste = ["outputomraade", "konsolomraade"];
+function injectJs(jshtml, js, omraadeliste, antalkodelinjer) {
 
     omraadeliste.forEach(function (omraade) {
 
@@ -57,7 +64,7 @@ function injectJs(js, omraadeliste) {
         const iFrameBody = iFrame.contentWindow.document.body;
         const myscript = document.createElement('script');
         myscript.setAttribute("id", "scriptomraade");
-        var scripttxt = 'var fejl = false;';
+        let scripttxt = 'var fejl = false;';
         scripttxt += 'try {';
         scripttxt += js;
         scripttxt += '} catch(err) { ';
@@ -67,7 +74,7 @@ function injectJs(js, omraadeliste) {
         scripttxt += 'finally {';
         scripttxt += 'if (!fejl) {';
         scripttxt += 'var div = document.getElementById("documentwrite");';
-        scripttxt += 'div.innerHTML += "<span>Instruktioner udført med succes!</span>";';
+        scripttxt += 'div.innerHTML += "<span>' + antalkodelinjer + ' kodelinje(r) udført med succes!</span>";';
         scripttxt += '}}';
         myscript.textContent = scripttxt;
         iFrameBody.appendChild(myscript);
@@ -76,21 +83,25 @@ function injectJs(js, omraadeliste) {
 }
 
 document.addEventListener('click', function (event) {
-    var omraadeliste = ["outputomraade", "konsolomraade"];
+    let omraadeliste = ["outputomraade", "konsolomraade"];
     const frameObj = document.getElementById("redigeringsomraade");
-    const eksempel='const medarbejdere = {<br>"Ib": 30000,<br>"Jens": 25000,<br>"Malene": 37000,<br>"Gitte": 23000<br>};<br><br>function loensum() {<br>let sum=0;<br>for (let maanedsloen of Object.values(medarbejdere)) {<br>	sum+=maanedsloen;<br>}<br>return sum;<br>}<br><br>function antalmedarb() {<br>	return Object.keys(medarbejdere).length;<br>}<br><br>function navneliste() {<br>let liste="";<br>for (let navn of Object.keys(medarbejdere)) {<br>	liste+=navn+" ";<br>}<br>return liste;<br>}<br><br>console.log("Information fra personaleafdelingen");<br>console.log("-----------------------------------");<br>console.log("Der er "+antalmedarb() +" medarbejdere, som i alt får ");<br>console.log("kr "+loensum()+" om måneden.");<br>console.log("Navneliste: "+navneliste());<br>';
+
+    const eksempel = '<div>const medarbejdere = {</div><div>"Ib": 30000,</div><div>"Jens": 25000,</div><div>"Malene": 37000,</div><div>"Gitte": 23000</div><div>};</div><div><br></div><div>function loensum() {</div><div>let sum=0;</div><div>for (let maanedsloen of Object.values(medarbejdere)) {</div><div>	sum+=maanedsloen;</div><div>}</div><div>return sum;</div><div>}</div><div><br></div><div>function antalmedarb() {</div><div>	return Object.keys(medarbejdere).length;</div><div>}</div><div><br></div><div>function navneliste() {</div><div>let liste="";</div><div>for (let navn of Object.keys(medarbejdere)) {</div><div>	liste+=navn+" ";</div><div>}</div><div>return liste;</div><div>}</div><div><br></div><div>console.log("Information fra personaleafdelingen");</div><div>console.log("-----------------------------------");</div><div>console.log("Der er "+antalmedarb() +" medarbejdere, som i alt får ");</div><div>console.log("kr "+loensum()+" om måneden.");</div><div>console.log("Navneliste: "+navneliste());</div>';
 
     if (event.target.classList.contains('execJs')) {
         const frameContent = frameObj.contentWindow.document.body.textContent;
+        const frameHTMLContent = frameObj.contentWindow.document.body.innerHTML;
+        const antalKodelinjer = skafAntalKodelinjer(frameHTMLContent, frameContent, '</div>');
+
         fjernIndhold();
 
         if (derErDialog(frameContent)) {
             const iFrameKonsol = window.frames["konsolomraade"].document.getElementById("konsol");
-            iFrameKonsol.innerHTML = "Når du bruger JavaScript dialogbokse i dit script (alert, confirm eller prompt), er konsolvinduet IKKE aktivt.";
+            iFrameKonsol.innerHTML = "Når du bruger JavaScript dialogbokse i dit script (alert, confirm eller prompt), er konsolvinduet <u>ikke</u> aktivt.<br><br>Du finder resultatet i resultatvinduet herunder.";
             omraadeliste = ["outputomraade"];
-            injectJs(erstatWrite(erstatConsoleLog(frameContent)), omraadeliste);
+            injectJs(frameHTMLContent, erstatWrite(erstatConsoleLog(frameContent)), omraadeliste, antalKodelinjer);
         } else {
-            injectJs(erstatWrite(frameContent), omraadeliste);
+            injectJs(frameHTMLContent, erstatWrite(frameContent), omraadeliste, antalKodelinjer);
         }
     }
 
@@ -109,6 +120,8 @@ document.addEventListener('click', function (event) {
             iFrameBody.innerHTML = eksempel;
         }
     }
+
+    redigeringsomraade.focus();
 
 }, false);
 
