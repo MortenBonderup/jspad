@@ -13,12 +13,48 @@ function derErDialog(js) {
     return false;
 }
 
+function danErstatningsliste(jshtml, erstatningsliste) {
+    const delTekst = jshtml.split('<div>');
+    const txtElem = [];
+    let bemPlacering = -1;
+    let divPlacering = -1;
+
+    for (let i = 0; i < delTekst.length; i++) {
+
+        if (delTekst[i].indexOf('//') !== -1) {
+            bemPlacering = delTekst[i].indexOf('//');
+            divPlacering = delTekst[i].indexOf('</div>');
+
+            if (divPlacering === -1) {
+                txtElem.push(delTekst[i].substr(bemPlacering, delTekst[i].length - bemPlacering));
+            } else {
+                txtElem.push(delTekst[i].substr(bemPlacering, delTekst[i].length - (6 + bemPlacering)));
+            }
+            // alert(txtElem[i]);
+        }
+    }
+    return txtElem;
+}
+
 function skafAntalKodelinjer(jshtml, js, separator) {
     const linjer = jshtml.split(separator);
-    if (js.trim().length > 0)
+    if (js.trim().length > 0) {
         return linjer.length;
-    else
+    } else {
         return 0;
+    }
+}
+
+function erstatFraListe(js, erstatningsliste) {
+    let slutres = js;
+    const elseStr = /else/gi;
+
+    for (let i = 0; i < erstatningsliste.length; i++) {
+        slutres = slutres.replace(erstatningsliste[i], "/* " + erstatningsliste[i] + " */");
+    }
+    
+    slutres = slutres.replace(elseStr, "else ");
+    return slutres;
 }
 
 function erstatConsoleLog(js) {
@@ -89,9 +125,13 @@ document.addEventListener('click', function (event) {
     const eksempel = '<div>const medarbejdere = {</div><div>"Ib": 30000,</div><div>"Jens": 25000,</div><div>"Malene": 37000,</div><div>"Gitte": 23000</div><div>};</div><div><br></div><div>function loensum() {</div><div>let sum=0;</div><div>for (let maanedsloen of Object.values(medarbejdere)) {</div><div>	sum+=maanedsloen;</div><div>}</div><div>return sum;</div><div>}</div><div><br></div><div>function antalmedarb() {</div><div>	return Object.keys(medarbejdere).length;</div><div>}</div><div><br></div><div>function navneliste() {</div><div>let liste="";</div><div>for (let navn of Object.keys(medarbejdere)) {</div><div>	liste+=navn+" ";</div><div>}</div><div>return liste;</div><div>}</div><div><br></div><div>console.log("Information fra personaleafdelingen");</div><div>console.log("-----------------------------------");</div><div>console.log("Der er "+antalmedarb() +" medarbejdere, som i alt får ");</div><div>console.log("kr "+loensum()+" om måneden.");</div><div>console.log("Navneliste: "+navneliste());</div>';
 
     if (event.target.classList.contains('execJs')) {
+        let erstatningsliste = [];
         const frameContent = frameObj.contentWindow.document.body.textContent;
         const frameHTMLContent = frameObj.contentWindow.document.body.innerHTML;
         const antalKodelinjer = skafAntalKodelinjer(frameHTMLContent, frameContent, '</div>');
+
+        erstatningsliste = danErstatningsliste(frameHTMLContent, erstatningsliste);
+        //alert(erstatningsliste);
 
         fjernIndhold();
 
@@ -99,9 +139,9 @@ document.addEventListener('click', function (event) {
             const iFrameKonsol = window.frames["konsolomraade"].document.getElementById("konsol");
             iFrameKonsol.innerHTML = "Når du bruger JavaScript dialogbokse i dit script (alert, confirm eller prompt), er konsolvinduet <u>ikke</u> aktivt.<br><br>Du finder resultatet i resultatvinduet herunder.";
             omraadeliste = ["outputomraade"];
-            injectJs(frameHTMLContent, erstatWrite(erstatConsoleLog(frameContent)), omraadeliste, antalKodelinjer);
+            injectJs(frameHTMLContent, erstatFraListe(erstatWrite(erstatConsoleLog(frameContent)), erstatningsliste), omraadeliste, antalKodelinjer);
         } else {
-            injectJs(frameHTMLContent, erstatWrite(frameContent), omraadeliste, antalKodelinjer);
+            injectJs(frameHTMLContent, erstatFraListe(erstatWrite(frameContent), erstatningsliste), omraadeliste, antalKodelinjer);
         }
     }
 
@@ -127,7 +167,5 @@ document.addEventListener('click', function (event) {
 
 window.addEventListener("load", function (event) {
     redigeringsomraade.document.designMode = "On";
-    document.getElementById("redigeringsomraade").contentDocument.body.style.fontFamily = "Lucida Console, Monaco, monospace";
-    document.getElementById("redigeringsomraade").contentDocument.body.style.fontSize = "small";
     redigeringsomraade.focus();
 });
