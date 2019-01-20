@@ -18,20 +18,25 @@ function danErstatningsliste(jshtml, erstatningsliste) {
     const txtElem = [];
     let bemPlacering = -1;
     let divPlacering = -1;
+    let brPlacering = -1;
 
     for (let i = 0; i < delTekst.length; i++) {
 
         if (delTekst[i].indexOf('//') !== -1) {
             bemPlacering = delTekst[i].indexOf('//');
             divPlacering = delTekst[i].indexOf('</div>');
-
-            if (divPlacering === -1) {
+            brPlacering = delTekst[i].indexOf('<br>');
+            
+            if (divPlacering === -1 && brPlacering === -1) {
                 txtElem.push(delTekst[i].substr(bemPlacering, delTekst[i].length - bemPlacering));
-            } else {
+            } else if (divPlacering !== -1 && brPlacering === -1) {
                 txtElem.push(delTekst[i].substr(bemPlacering, delTekst[i].length - (6 + bemPlacering)));
+            } else if (divPlacering !== -1 && brPlacering !== -1) {
+                txtElem.push(delTekst[i].substr(bemPlacering, delTekst[i].length - (10 + bemPlacering)));
             }
-            alert(txtElem[i]);
+
         }
+        alert(delTekst[i]);
     }
     return txtElem;
 }
@@ -52,7 +57,7 @@ function erstatFraListe(js, erstatningsliste) {
     for (let i = 0; i < erstatningsliste.length; i++) {
         slutres = slutres.replace(erstatningsliste[i], "/* " + erstatningsliste[i] + " */");
     }
-    
+
     slutres = slutres.replace(elseStr, "else "); // Dette skal ændres, da der også ændres i alm. tekst.
     return slutres;
 }
