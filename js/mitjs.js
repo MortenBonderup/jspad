@@ -30,7 +30,7 @@ function danErstatningsliste(jshtml, erstatningsliste) {
             } else {
                 txtElem.push(delTekst[i].substr(bemPlacering, delTekst[i].length - (6 + bemPlacering)));
             }
-            // alert(txtElem[i]);
+            alert(txtElem[i]);
         }
     }
     return txtElem;
@@ -53,7 +53,7 @@ function erstatFraListe(js, erstatningsliste) {
         slutres = slutres.replace(erstatningsliste[i], "/* " + erstatningsliste[i] + " */");
     }
     
-    slutres = slutres.replace(elseStr, "else ");
+    slutres = slutres.replace(elseStr, "else "); // Dette skal ændres, da der også ændres i alm. tekst.
     return slutres;
 }
 
