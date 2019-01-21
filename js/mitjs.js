@@ -13,6 +13,12 @@ function derErDialog(js) {
     return false;
 }
 
+function mwlz(dt) 
+{ 
+  return (dt.getMinutes() < 10 ? '0' : '') + dt.getMinutes();
+}
+
+
 function erstatConsoleLog(js) {
     const consolelog = /console.log\(/gi;
     const slutres = js.replace(consolelog, "documentwrite.insertAdjacentText('beforeend',");
@@ -44,6 +50,9 @@ function fjernIndhold() {
 
 function injectJs(js, omraadeliste) {
     //const omraadeliste = ["outputomraade", "konsolomraade"];
+    const date = new Date();
+
+    console.log( date.getHours()+":"+mwlz(date)+":"+date.getSeconds());
 
     omraadeliste.forEach(function (omraade) {
 
@@ -67,7 +76,7 @@ function injectJs(js, omraadeliste) {
         scripttxt += 'finally {';
         scripttxt += 'if (!fejl) {';
         scripttxt += 'var div = document.getElementById("documentwrite");';
-        scripttxt += 'div.innerHTML += "<span>Instruktioner udført med succes!</span>";';
+        scripttxt += 'div.innerHTML += "<span>Instruktioner udført med succes! ('+date.getHours()+":"+mwlz(date)+":"+date.getSeconds()+')</span>";';
         scripttxt += '}}';
         myscript.textContent = scripttxt;
         iFrameBody.appendChild(myscript);
