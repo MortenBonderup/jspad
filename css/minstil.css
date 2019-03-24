@@ -55,6 +55,11 @@
     height: 25px;
 }
 
+.redigeringsramme {
+    padding: 5px;
+    resize: none;
+    height: 292px;
+}
 
 
 
