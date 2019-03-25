@@ -36,8 +36,10 @@ function erstatWrite(js) {
     const writeln = /document.writeln\(/gi;
     const write = /document.write\(/gi;
 
-    const res = js.replace(writeln, "documentwrite.insertAdjacentText('beforeend',");
-    const slutres = res.replace(write, "documentwrite.insertAdjacentText('beforeend',");
+    //const res = js.replace(writeln, "documentwrite.insertAdjacentText('beforeend',");
+    //const slutres = res.replace(write, "documentwrite.insertAdjacentText('beforeend',");
+    const res = js.replace(writeln, "documentwrite.insertAdjacentHTML('beforeend',");
+    const slutres = res.replace(write, "documentwrite.insertAdjacentHTML('beforeend',");
     return slutres;
 }
 
