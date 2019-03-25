@@ -13,9 +13,16 @@ function derErDialog(js) {
     return false;
 }
 
-function mwlz(dt)
+function mwlz(dt, enhed)
 {
-    return (dt.getMinutes() < 10 ? '0' : '') + dt.getMinutes();
+    if (enhed === "min") {
+        return (dt.getMinutes() < 10 ? '0' : '') + dt.getMinutes();
+    }
+
+    if (enhed === "sek") {
+        return (dt.getSeconds() < 10 ? '0' : '') + dt.getSeconds();
+    }
+
 }
 
 
@@ -85,7 +92,7 @@ function injectJs(js, omraadeliste) {
         scripttxt += 'finally {';
         scripttxt += 'if (!fejl) {';
         scripttxt += 'var div = document.getElementById("documentwrite");';
-        scripttxt += 'div.innerHTML += "<span>' + jsLinjer + ' kodelinje(r) udført med succes! (' + date.getHours() + ":" + mwlz(date) + ":" + ("00"+date.getSeconds()).substr(-2) + ')</span>";';
+        scripttxt += 'div.innerHTML += "<span>' + jsLinjer + ' kodelinje(r) udført med succes! (' + date.getHours() + ":" + mwlz(date,"min") + ":" + mwlz(date,"sek") + ')</span>";';
         scripttxt += '}}';
         myscript.textContent = scripttxt;
         iFrameBody.appendChild(myscript);
