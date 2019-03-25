@@ -51,8 +51,15 @@ function fjernIndhold() {
 function injectJs(js, omraadeliste) {
     //const omraadeliste = ["outputomraade", "konsolomraade"];
     const date = new Date();
+    var jsLinjer;
 
-    console.log(date.getHours() + ":" + mwlz(date) + ":" + date.getSeconds());
+    if (js.trim() === '') {
+        jsLinjer = 0;
+    } else {
+        jsLinjer = js.split(/\r*\n/).length;
+    }
+
+    //console.log(date.getHours() + ":" + mwlz(date) + ":" + date.getSeconds());
 
     omraadeliste.forEach(function (omraade) {
 
@@ -68,9 +75,9 @@ function injectJs(js, omraadeliste) {
         myscript.setAttribute("id", "scriptomraade");
         var scripttxt = 'var fejl = false;';
         scripttxt += 'try {';
-        scripttxt += '\n'
+        scripttxt += '\n';
         scripttxt += js;
-        scripttxt += '\n'
+        scripttxt += '\n';
         scripttxt += '} catch(err) { ';
         scripttxt += 'fejl=true;';
         scripttxt += 'var div = document.getElementById("problemomraade");';
@@ -78,7 +85,7 @@ function injectJs(js, omraadeliste) {
         scripttxt += 'finally {';
         scripttxt += 'if (!fejl) {';
         scripttxt += 'var div = document.getElementById("documentwrite");';
-        scripttxt += 'div.innerHTML += "<span>Instruktioner udført med succes! (' + date.getHours() + ":" + mwlz(date) + ":" + date.getSeconds() + ')</span>";';
+        scripttxt += 'div.innerHTML += "<span>' + jsLinjer + ' kodelinje(r) udført med succes! (' + date.getHours() + ":" + mwlz(date) + ":" + ("00"+date.getSeconds()).substr(-2) + ')</span>";';
         scripttxt += '}}';
         myscript.textContent = scripttxt;
         iFrameBody.appendChild(myscript);
@@ -90,7 +97,7 @@ document.addEventListener('click', function (event) {
     var omraadeliste = ["outputomraade", "konsolomraade"];
     const frameObj = document.getElementById("redigeringsomraade");
     // const eksempel = 'const medarbejdere = {<br>"Ib": 30000,<br>"Jens": 25000,<br>"Malene": 37000,<br>"Gitte": 23000<br>};<br><br>function loensum() {<br>let sum=0;<br>for (let maanedsloen of Object.values(medarbejdere)) {<br>	sum+=maanedsloen;<br>}<br>return sum;<br>}<br><br>function antalmedarb() {<br>	return Object.keys(medarbejdere).length;<br>}<br><br>function navneliste() {<br>let liste="";<br>for (let navn of Object.keys(medarbejdere)) {<br>	liste+=navn+" ";<br>}<br>return liste;<br>}<br><br>console.log("Information fra personaleafdelingen");<br>console.log("-----------------------------------");<br>console.log("Der er "+antalmedarb() +" medarbejdere, som i alt får ");<br>console.log("kr "+loensum()+" om måneden.");<br>console.log("Navneliste: "+navneliste());<br>';
-    
+
     const eksempel = 'const medarbejdere = {\n"Ib": 30000,\n"Jens": 25000,\n"Malene": 37000,\n"Gitte": 23000\n};\n\nfunction loensum() {\nlet sum=0;\nfor (let maanedsloen of Object.values(medarbejdere)) {\n	sum+=maanedsloen;\n}\nreturn sum;\n}\n\nfunction antalmedarb() {\n	return Object.keys(medarbejdere).length;\n}\n\nfunction navneliste() {\nlet liste="";\nfor (let navn of Object.keys(medarbejdere)) {\n	liste+=navn+" ";\n}\nreturn liste;\n}\n\nconsole.log("Information fra personaleafdelingen");\nconsole.log("-----------------------------------");\nconsole.log("Der er "+antalmedarb() +" medarbejdere, som i alt får ");\nconsole.log("kr "+loensum()+" om måneden.");\nconsole.log("Navneliste: "+navneliste());\n';
 
     if (event.target.classList.contains('execJs')) {
@@ -122,7 +129,7 @@ document.addEventListener('click', function (event) {
             //const iFrameBody = frameObj.contentWindow.document.body;
             //iFrameBody.innerHTML = eksempel;
             document.getElementById("redigeringsomraade").value = eksempel;
-            
+
         }
     }
 
