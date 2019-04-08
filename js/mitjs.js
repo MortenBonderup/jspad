@@ -122,6 +122,9 @@ document.addEventListener('click', function (event) {
         } else {
             injectJs(erstatWrite(frameContent), omraadeliste);
         }
+        document.getElementById("redigeringsomraade").focus();
+        document.getElementById("redigeringsomraade").setSelectionRange(0,0); 
+        document.getElementById("redigeringsomraade").scrollTop = 0;
     }
 
     if (event.target.classList.contains('rydkonsol')) {
