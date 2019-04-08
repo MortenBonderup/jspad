@@ -1,5 +1,12 @@
 "use strict";
 
+function valgteEksempel(eksempelIndeks) {
+    const eksempelListe = ['','// *** Variabler eksempler ***\n\nconsole.log("--- Eksempel 1: var ---");\nvar antalMedlemr = 100;\nvar klubNavn = "Klub Fantastic";\nconsole.log(klubNavn + " har " + antalMedlemr + " medlemmer.");\n\nconsole.log("--- Eksempel 2: let ---");\nlet antalBrugr = 123;\nlet bassinNavn = "Svømmeklubben Plask";\nconsole.log(bassinNavn + " har " + antalBrugr + " brugere.");\n\nconsole.log("--- Ændringer til variabler ---");\nantalMedlemr = antalMedlemr + 10;\nbassinNavn = "Svømmeklubben Spring";\nconsole.log(klubNavn + " fik 10 nye medlemmer og har nu "+antalMedlemr+".");\nconsole.log("Svømmeklubben skiftede navn til "+bassinNavn+".");','// *** Konstanter eksempler ***\n\nconst navn = "Maria";\nconst skattePct = 45;\nlet indkomstKr = 15000;\nlet skat = (indkomstKr*skattePct)/100;\n\nconsole.log(navn + " skal betale kr. " + skat + " i skat.");\n\n// Det er tilladt at ændre en variabels værdi\n// under programafvikling, fx\n\nindkomstKr = 20000;\n\n// Det er ikke tilladt at ændre en konstants\n// værdi under programafviklingen, fx\n\n// skattePct = 39;\n\n// Fjern // fra forrige linje og du vil\n// få en JavaScript fejl.','// *** Arrays eksempler ***\n\nconsole.log("--- Eksempel 1: Tekst array ---");\nlet navneListe = ["Jens","Ib","Anna","Maria","Hans","Julie"];\n\nconsole.log("Første navn på listen er: "+navneListe[0]);\nconsole.log("Sidste navn på listen er: "+navneListe[5]);\nconsole.log("Antal navne på navnelisten: "+navneListe.length);\n\nnavneListe.push("Morten");\nconsole.log("Sidste navn på listen er nu : "+navneListe[6]);\nconsole.log("Antal navne på navnelisten: "+navneListe.length);\n\nconsole.log("--- Eksempel 2: Numerisk array ---");\nlet salgKr = new Array(2300,5400,7300);\nconsole.log("Det gennemsnitlige salg for årets første tre måneder var: ");\nconsole.log("kr. "+(salgKr[0]+salgKr[1]+salgKr[2])/salgKr.length);\n','// *** Selektions (if-else) eksempler ***\n\nconsole.log("--- Eksempel 1: if ---");\nconst bonusPct = 5;\nlet salgJanuar = 10000;\nlet bonusKr = 0;\n\nif (salgJanuar > 9999) {\n\tbonusKr = (salgJanuar * bonusPct) / 100;\n}\n\nconsole.log("Der udbetales kr. " + bonusKr + " i bonus.");\n\nconsole.log("--- Eksempel 2: if-else ---");\nlet medlemAktiv = false;\n\nif (medlemAktiv) {\n\tconsole.log("Medlemmet er aktivt.");\n}\nelse {\n\tconsole.log("Medlemmet er ikke aktivt.");\n}\n','// *** Repetitions (for/while) eksempler ***\n\nconst navneListe = ["Jens","Ib","Anna","Maria","Hans","Julie"];\n\nconsole.log("--- Eksempel 1: for ---");\nfor (var i=0;i<navneListe.length;i++) {\n\tconsole.log(navneListe[i]);\n}\n\nconsole.log("--- Eksempel 2: forEach ---");\nnavneListe.forEach(function (navn) {\n\tconsole.log(navn);\n})\n\nconsole.log("--- Eksempel 3: while ---");\nvar j=0;\nwhile (j<navneListe.length) {\n\tconsole.log(navneListe[j]);\n\tj++;\n}\n\nconsole.log("--- Eksempel 4: do-while ---");\nvar k=0;\ndo {\n\tconsole.log(navneListe[k]);\n\tk++;\n} while (k<navneListe.length);','// *** Funktion med/uden parametre eksempler ***\n\nconsole.log("--- Eksempel 1: Uden parametre ---");\nfunction visTekst() {\n\tconsole.log("Denne funktioner viser denne tekst hver gang");\n}\n\nvisTekst();\n\nconsole.log("--- Eksempel 2: Med parameter ---");\nfunction visTilsendteTekst(tekst) {\n\tconsole.log("Viser den tekst som sendes som parameter:");\n\tconsole.log(tekst);\n}\n\nvisTilsendteTekst("Hej med dig");\nvisTilsendteTekst("Jeg hedder Morten");\n\nconsole.log("--- Eksempel 3: Med parametre og returværdi ---");\nfunction beregnTotal(tal1,tal2) {\n\treturn tal1+tal2;\n}\n\nlet total = beregnTotal(10,15);\nconsole.log("Total er lig med " + total);\n','// *** Scope ***\n\nfunction scopeTest(param1) {\n\tlet fvar = 100;\n\tconsole.log("Jeg kender parameter: " + param1);\n\tconsole.log("Jeg kender global variabel: " + gvar);\n}\n\nlet gvar = 200; // Variabel udenfor funktion\n\nscopeTest(300);\nconsole.log("Jeg kender ikke funktionsvariablen: "+fvar);\nconsole.log("Jeg kender ikke parameter: "+param1);\n'];
+    
+    return eksempelListe[eksempelIndeks];
+}
+
+
 function derErDialog(js) {
 
     if (js.search(/alert/gi) > -1) {
@@ -12,6 +19,7 @@ function derErDialog(js) {
 
     return false;
 }
+
 
 function mwlz(dt, enhed)
 {
@@ -35,9 +43,6 @@ function erstatConsoleLog(js) {
 function erstatWrite(js) {
     const writeln = /document.writeln\(/gi;
     const write = /document.write\(/gi;
-
-    //const res = js.replace(writeln, "documentwrite.insertAdjacentText('beforeend',");
-    //const slutres = res.replace(write, "documentwrite.insertAdjacentText('beforeend',");
     const res = js.replace(writeln, "documentwrite.insertAdjacentHTML('beforeend',");
     const slutres = res.replace(write, "documentwrite.insertAdjacentHTML('beforeend',");
     return slutres;
@@ -58,17 +63,14 @@ function fjernIndhold() {
 }
 
 function injectJs(js, omraadeliste) {
-    //const omraadeliste = ["outputomraade", "konsolomraade"];
     const date = new Date();
-    var jsLinjer;
+    let jsLinjer;
 
     if (js.trim() === '') {
         jsLinjer = 0;
     } else {
         jsLinjer = js.split(/\r*\n/).length;
     }
-
-    //console.log(date.getHours() + ":" + mwlz(date) + ":" + date.getSeconds());
 
     omraadeliste.forEach(function (omraade) {
 
@@ -82,7 +84,7 @@ function injectJs(js, omraadeliste) {
         const iFrameBody = iFrame.contentWindow.document.body;
         const myscript = document.createElement('script');
         myscript.setAttribute("id", "scriptomraade");
-        var scripttxt = 'var fejl = false;';
+        let scripttxt = 'var fejl = false;';
         scripttxt += 'try {';
         scripttxt += '\n';
         scripttxt += js;
@@ -94,7 +96,7 @@ function injectJs(js, omraadeliste) {
         scripttxt += 'finally {';
         scripttxt += 'if (!fejl) {';
         scripttxt += 'var div = document.getElementById("documentwrite");';
-        scripttxt += 'div.innerHTML += "<span>' + jsLinjer + ' kodelinje(r) udført med succes! (' + date.getHours() + ":" + mwlz(date,"min") + ":" + mwlz(date,"sek") + ')</span>";';
+        scripttxt += 'div.innerHTML += "<span>' + jsLinjer + ' kodelinje(r) udført med succes! (' + date.getHours() + ":" + mwlz(date, "min") + ":" + mwlz(date, "sek") + ')</span>";';
         scripttxt += '}}';
         myscript.textContent = scripttxt;
         iFrameBody.appendChild(myscript);
@@ -102,15 +104,13 @@ function injectJs(js, omraadeliste) {
     });
 }
 
-document.addEventListener('click', function (event) {
-    var omraadeliste = ["outputomraade", "konsolomraade"];
-    const frameObj = document.getElementById("redigeringsomraade");
-    // const eksempel = 'const medarbejdere = {<br>"Ib": 30000,<br>"Jens": 25000,<br>"Malene": 37000,<br>"Gitte": 23000<br>};<br><br>function loensum() {<br>let sum=0;<br>for (let maanedsloen of Object.values(medarbejdere)) {<br>	sum+=maanedsloen;<br>}<br>return sum;<br>}<br><br>function antalmedarb() {<br>	return Object.keys(medarbejdere).length;<br>}<br><br>function navneliste() {<br>let liste="";<br>for (let navn of Object.keys(medarbejdere)) {<br>	liste+=navn+" ";<br>}<br>return liste;<br>}<br><br>console.log("Information fra personaleafdelingen");<br>console.log("-----------------------------------");<br>console.log("Der er "+antalmedarb() +" medarbejdere, som i alt får ");<br>console.log("kr "+loensum()+" om måneden.");<br>console.log("Navneliste: "+navneliste());<br>';
+// -------------- H O V E D P R O G R A M ------------------
 
-    const eksempel = 'const medarbejdere = {\n"Ib": 30000,\n"Jens": 25000,\n"Malene": 37000,\n"Gitte": 23000\n};\n\nfunction loensum() {\nlet sum=0;\nfor (let maanedsloen of Object.values(medarbejdere)) {\n	sum+=maanedsloen;\n}\nreturn sum;\n}\n\nfunction antalmedarb() {\n	return Object.keys(medarbejdere).length;\n}\n\nfunction navneliste() {\nlet liste="";\nfor (let navn of Object.keys(medarbejdere)) {\n	liste+=navn+" ";\n}\nreturn liste;\n}\n\nconsole.log("Information fra personaleafdelingen");\nconsole.log("-----------------------------------");\nconsole.log("Der er "+antalmedarb() +" medarbejdere, som i alt får ");\nconsole.log("kr "+loensum()+" om måneden.");\nconsole.log("Navneliste: "+navneliste());\n';
+document.addEventListener('click', function (event) {
+    let omraadeliste = ["outputomraade", "konsolomraade"];
+    const frameObj = document.getElementById("redigeringsomraade");
 
     if (event.target.classList.contains('execJs')) {
-        //const frameContent = frameObj.contentWindow.document.body.textContent;
         const frameContent = document.getElementById("redigeringsomraade").value;
         fjernIndhold();
 
@@ -132,23 +132,54 @@ document.addEventListener('click', function (event) {
         window.frames['outputomraade'].location.replace("output.html");
     }
 
-    if (event.target.classList.contains('hentEksempel')) {
-        const ok = confirm("Overskriv eksisterende JavaScript ?");
-        if (ok) {
-            //const iFrameBody = frameObj.contentWindow.document.body;
-            //iFrameBody.innerHTML = eksempel;
-            document.getElementById("redigeringsomraade").value = eksempel;
-
-        }
-    }
-
 }, false);
 
 window.addEventListener("load", function (event) {
-    //redigeringsomraade.document.designMode = "On";
-    //document.getElementById("redigeringsomraade").contentDocument.body.style.fontFamily = "Lucida Console, Monaco, monospace";
-    //document.getElementById("redigeringsomraade").contentDocument.body.style.fontSize = "small";
     document.getElementById("redigeringsomraade").style.fontFamily = "Lucida Console, Monaco, monospace";
     document.getElementById("redigeringsomraade").style.fontSize = "small";
-    redigeringsomraade.focus();
-});
+    document.getElementById("redigeringsomraade").focus();
+},false);
+
+
+document.getElementById("hentEksempel").addEventListener("change", function () {
+    const eksempelIndeks=document.getElementById("hentEksempel").value;
+    if (eksempelIndeks>-1) {
+        if (document.getElementById("redigeringsomraade").value.trim()!='') {
+            const ok = confirm("Overskriv eksisterende JavaScript ?");
+
+            if (ok) {
+                fjernIndhold();
+                document.getElementById("redigeringsomraade").value = valgteEksempel(eksempelIndeks);
+            }
+        }
+        else {
+                fjernIndhold();
+                document.getElementById("redigeringsomraade").value = valgteEksempel(eksempelIndeks);
+        }
+        document.getElementById("hentEksempel").selectedIndex="0";
+    }
+    document.getElementById("redigeringsomraade").focus();
+    document.getElementById("redigeringsomraade").setSelectionRange(0,0); 
+    document.getElementById("redigeringsomraade").scrollTop = 0;
+
+},false);
+
+
+document.getElementById("redigeringsomraade").addEventListener('keydown', function (e) {
+    if (e.keyCode === 9) {
+        const start = this.selectionStart;
+        const slut = this.selectionEnd;
+
+        const target = e.target;
+        const indhold = target.value;
+
+
+        target.value = indhold.substring(0, start)
+                + "\t"
+                + indhold.substring(slut);
+
+        this.selectionStart = this.selectionEnd = start + 1;
+
+        e.preventDefault();
+    }
+}, false);
