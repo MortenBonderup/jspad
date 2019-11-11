@@ -9,30 +9,18 @@
         <link rel="stylesheet" href="css/minstil.css">
     </head>
     <body>
-
+        <header class="header_container">
+            <a href="#" class="lang_link" id="dan_lang_link">Dansk</a><a href="#" class="lang_link" id="eng_lang_link">English</a>
+        </header>
         <main class="hovedindhold">
             <section class="rammesektion">
                 <div class="rammeindhold">
                     <div>
                         <select class="knap" id="hentEksempel">
-                            <option value="-1">Indlæs eksempel...</option>
-                             <option value="0">Ryd alle vinduer</option>
-                            <optgroup label="Arbejdslager">
-                                <option value="1">Variabler</option>
-                                <option value="2">Konstanter</option>
-                                <option value="3">Arrays</option>
-                            </optgroup>
-                            <optgroup label="Kontrolstrukturer">
-                                <option value="4">Selektion (if-else)</option>
-                                <option value="5">Repetition (for/while)</option>
-                            </optgroup>
-                            <optgroup label="Funktioner">
-                                <option value="6">Med/uden parametre</option>
-                                <option value="7">Scope</option>
-                            </optgroup>
+                            <!-- Indsættes af javascript: sprogafhængig -->
                         </select>
 
-                        <button class="knap execJs">&nbsp;<i class="far fa-play-circle"></i>&nbsp;Kør JavaScript&nbsp;</button>
+                        <button class="knap execJs" id="run_knap">&nbsp;<i class="far fa-play-circle"></i>&nbsp;Kør&nbsp;</button>
                     </div>
                     <div class="rammetekst">
                         JavaScript
@@ -43,9 +31,9 @@
             <section class="rammesektion">
                 <div class="rammeindhold">
 
-                    <button class="knap rydkonsol">&nbsp;<i class="fas fa-eraser"></i>&nbsp;Ryd konsolvindue&nbsp;</button>
+                    <button id="rydkonsol_knap" class="knap rydkonsol">&nbsp;<i class="fas fa-eraser"></i>&nbsp;Ryd konsolvindue&nbsp;</button>
 
-                    <div class="rammetekst">
+                    <div class="rammetekst" id="konsol_text">
                         Konsol
                     </div>
                 </div>
@@ -56,9 +44,9 @@
             <section class="resultatrammesektion">
                 <div class="rammeindhold">
 
-                    <button class="knap rydresultat">&nbsp;<i class="fas fa-eraser"></i>&nbsp;Ryd resultatvindue&nbsp;</button>
+                    <button id="rydresultat_knap" class="knap rydresultat">&nbsp;<i class="fas fa-eraser"></i>&nbsp;Ryd resultatvindue&nbsp;</button>
 
-                    <div class="rammetekst">
+                    <div class="rammetekst" id="resultat_text">
                         Resultat
                     </div>
                 </div>
