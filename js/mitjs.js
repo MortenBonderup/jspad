@@ -149,46 +149,29 @@ function skiftSprog(sprog) {
 
 var appSprog=skiftSprog("Dansk"); 
 
-document.addEventListener('click', function (event) {
+document.getElementById("run_knap").addEventListener('click', function (event) {
     let omraadeliste = ["outputomraade", "konsolomraade"];
     const frameObj = document.getElementById("redigeringsomraade");
+    const frameContent = document.getElementById("redigeringsomraade").value;
+    fjernIndhold();
 
-    if (event.target.classList.contains('execJs')) {
-        const frameContent = document.getElementById("redigeringsomraade").value;
-        fjernIndhold();
-
-        if (derErDialog(frameContent)) {
-            const iFrameKonsol = window.frames["konsolomraade"].document.getElementById("konsol");
-            if (appSprog==="Dansk") {
-                iFrameKonsol.innerHTML = "Når du bruger JavaScript dialogbokse i dit script (alert, confirm eller prompt), er konsolvinduet IKKE aktivt.";
-            } else {
-                iFrameKonsol.innerHTML = "When you use JavaScript dialog boxes in your script (alert, confirm or prompt), the console window is NOT active.";
-            }
-            omraadeliste = ["outputomraade"];
-            injectJs(erstatWrite(erstatConsoleLog(frameContent)), omraadeliste);
+    if (derErDialog(frameContent)) {
+        const iFrameKonsol = window.frames["konsolomraade"].document.getElementById("konsol");
+        if (appSprog==="Dansk") {
+            iFrameKonsol.innerHTML = "Når du bruger JavaScript dialogbokse i dit script (alert, confirm eller prompt), er konsolvinduet IKKE aktivt.";
         } else {
-            injectJs(erstatWrite(frameContent), omraadeliste);
+            iFrameKonsol.innerHTML = "When you use JavaScript dialog boxes in your script (alert, confirm or prompt), the console window is NOT active.";
         }
-        document.getElementById("redigeringsomraade").focus();
-        document.getElementById("redigeringsomraade").setSelectionRange(0,0); 
-        document.getElementById("redigeringsomraade").scrollTop = 0;
+        omraadeliste = ["outputomraade"];
+        injectJs(erstatWrite(erstatConsoleLog(frameContent)), omraadeliste);
+    } else {
+            injectJs(erstatWrite(frameContent), omraadeliste);
     }
-
-    if (event.target.classList.contains('rydkonsol')) {
-        window.frames['konsolomraade'].location.replace("konsol.html");
-    }
-
-    if (event.target.classList.contains('rydresultat')) {
-        window.frames['outputomraade'].location.replace("output.html");
-    }
+    document.getElementById("redigeringsomraade").focus();
+    document.getElementById("redigeringsomraade").setSelectionRange(0,0); 
+    document.getElementById("redigeringsomraade").scrollTop = 0;
 
 }, false);
-
-window.addEventListener("load", function (event) {
-    document.getElementById("redigeringsomraade").style.fontFamily = "Lucida Console, Monaco, monospace";
-    document.getElementById("redigeringsomraade").style.fontSize = "small";
-    document.getElementById("redigeringsomraade").focus();
-},false);
 
 
 document.getElementById("hentEksempel").addEventListener("change", function () {
@@ -256,3 +239,17 @@ document.getElementById("copy_knap").addEventListener('click', function (e) {
    document.getElementById("redigeringsomraade").setSelectionRange(0,0); 
    document.getElementById("redigeringsomraade").scrollTop = 0;
 }, false);
+
+document.getElementById("rydkonsol_knap").addEventListener('click', function (e) {
+    window.frames['konsolomraade'].location.replace("konsol.html");
+}, false);
+
+document.getElementById("rydresultat_knap").addEventListener('click', function (e) {
+       window.frames['outputomraade'].location.replace("output.html");
+}, false);
+
+window.addEventListener("load", function (event) {
+    document.getElementById("redigeringsomraade").style.fontFamily = "Lucida Console, Monaco, monospace";
+    document.getElementById("redigeringsomraade").style.fontSize = "small";
+    document.getElementById("redigeringsomraade").focus();
+},false);
