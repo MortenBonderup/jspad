@@ -78,7 +78,7 @@ function injectJs(js, omraadeliste) {
         jsLinjer = js.split(/\r*\n/).length;
     }
 
-    omraadeliste.forEach(function (omraade) {
+    omraadeliste.forEach(function(omraade) {
 
         // ---slet eksisterende script div---
         const iFrame = document.getElementById(omraade);
@@ -103,8 +103,9 @@ function injectJs(js, omraadeliste) {
         scripttxt += 'if (!fejl) {';
         scripttxt += 'var div = document.getElementById("documentwrite");';
         if (appSprog==="Dansk") {
-        scripttxt += 'div.innerHTML += "<span>' + jsLinjer + ' kodelinje(r) udført med succes! (' + date.getHours() + ":" + mwlz(date, "min") + ":" + mwlz(date, "sek") + ')</span>";'; } else {
-        scripttxt += 'div.innerHTML += "<span>' + jsLinjer + ' line(s) of code successfully executed! (' + date.getHours() + ":" + mwlz(date, "min") + ":" + mwlz(date, "sek") + ')</span>";';
+        scripttxt += 'div.innerHTML += "<span>' + jsLinjer + ' kodelinje(r) udført med succes! (' + date.getHours() + ":" + mwlz(date, "min") + ":" + mwlz(date, "sek") + ')</span>";'; 
+        } else {
+            scripttxt += 'div.innerHTML += "<span>' + jsLinjer + ' line(s) of code successfully executed! (' + date.getHours() + ":" + mwlz(date, "min") + ":" + mwlz(date, "sek") + ')</span>";';
         }
         scripttxt += '}}';
         myscript.textContent = scripttxt;
@@ -122,6 +123,7 @@ function skiftSprog(sprog) {
         document.getElementById("rydresultat_knap").innerHTML='&nbsp;<i class="fas fa-eraser"></i>&nbsp;Ryd resultatvindue&nbsp;';
         document.getElementById("rydkonsol_knap").innerHTML='&nbsp;<i class="fas fa-eraser"></i>&nbsp;Ryd konsolvindue&nbsp;';
         document.getElementById("run_knap").innerHTML='&nbsp;<i class="far fa-play-circle"></i>&nbsp;Kør&nbsp;';
+        document.getElementById("copy_knap").innerHTML='&nbsp;<i class="fas fa-copy"></i>&nbsp;Kopier alt&nbsp;';
         document.getElementById("konsol_text").innerText="Konsol";
         document.getElementById("resultat_text").innerText="Resultat";
         document.getElementById("hentEksempel").innerHTML='<option value="-1">Indlæs eksempel...</option><option value="0">Ryd alle vinduer</option><optgroup label="Arbejdslager"><option value="1">Variabler</option><option value="2">Konstanter</option><option value="3">Arrays</option></optgroup><optgroup label="Kontrolstrukturer"><option value="4">Selektion (if-else)</option><option value="5">Repetition (for/while)</option></optgroup><optgroup label="Funktioner"><option value="6">Med/uden parametre</option><option value="7">Scope</option></optgroup>';
@@ -134,6 +136,7 @@ function skiftSprog(sprog) {
         document.getElementById("rydresultat_knap").innerHTML='&nbsp;<i class="fas fa-eraser"></i>&nbsp;Clear result window&nbsp;';
         document.getElementById("rydkonsol_knap").innerHTML='&nbsp;<i class="fas fa-eraser"></i>&nbsp;Clear console window&nbsp;';
         document.getElementById("run_knap").innerHTML='&nbsp;<i class="far fa-play-circle"></i>&nbsp;Run&nbsp;';
+        document.getElementById("copy_knap").innerHTML='&nbsp;<i class="fas fa-copy"></i>&nbsp;Copy all&nbsp;';
         document.getElementById("konsol_text").innerText="Console";
         document.getElementById("resultat_text").innerText="Result";
         document.getElementById("hentEksempel").innerHTML='<option value="-1">Load example...</option><option value="0">Clear all windows</option><optgroup label="Memory"><option value="1">Variables</option><option value="2">Constants</option><option value="3">Arrays</option></optgroup><optgroup label="Control structures"><option value="4">Selection (if-else)</option><option value="5">Repetition (for/while)</option></optgroup><optgroup label="Functions"><option value="6">With/without parameters</option><option value="7">Scope</option></optgroup>';        
@@ -218,7 +221,8 @@ document.getElementById("hentEksempel").addEventListener("change", function () {
 
 
 document.getElementById("redigeringsomraade").addEventListener('keydown', function (e) {
-    if (e.keyCode === 9) {
+    const tabKeyCode = 9;
+    if (e.keyCode === tabKeyCode) {
         const start = this.selectionStart;
         const slut = this.selectionEnd;
 
@@ -242,4 +246,13 @@ document.getElementById("dan_lang_link").addEventListener('click', function (e) 
 
 document.getElementById("eng_lang_link").addEventListener('click', function (e) {
     appSprog=skiftSprog("English");
+}, false);
+
+document.getElementById("copy_knap").addEventListener('click', function (e) {
+   const jsText = document.querySelector("#redigeringsomraade");
+   jsText.select();
+   document.execCommand('copy');
+   document.getSelection().removeAllRanges();
+   document.getElementById("redigeringsomraade").setSelectionRange(0,0); 
+   document.getElementById("redigeringsomraade").scrollTop = 0;
 }, false);

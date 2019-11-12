@@ -75,6 +75,14 @@
     height: 25px;
 }
 
+.execJs {
+    background-color: green;
+    color: white;
+    border: darkgreen solid 1px;
+    cursor: pointer;
+}
+
+
 .redigeringsramme {
     padding: 5px 0px 5px 5px;
     resize: none;
@@ -83,6 +91,5 @@
     -o-tab-size : 4;
     tab-size: 4;
 }
-
 
 
