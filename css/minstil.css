@@ -80,6 +80,7 @@
     color: white;
     border: darkgreen solid 1px;
     cursor: pointer;
+    border-radius: 2px;
 }
 
 

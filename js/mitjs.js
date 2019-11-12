@@ -77,7 +77,7 @@ function injectJs(js, omraadeliste) {
     } else {
         jsLinjer = js.split(/\r*\n/).length;
     }
-
+    
     omraadeliste.forEach(function(omraade) {
 
         // ---slet eksisterende script div---
@@ -149,7 +149,7 @@ function skiftSprog(sprog) {
 
 var appSprog=skiftSprog("Dansk"); 
 
-document.getElementById("run_knap").addEventListener('click', function (event) {
+document.getElementById("run_knap").addEventListener('click', function (event) { 
     let omraadeliste = ["outputomraade", "konsolomraade"];
     const frameObj = document.getElementById("redigeringsomraade");
     const frameContent = document.getElementById("redigeringsomraade").value;
@@ -165,13 +165,13 @@ document.getElementById("run_knap").addEventListener('click', function (event) {
         omraadeliste = ["outputomraade"];
         injectJs(erstatWrite(erstatConsoleLog(frameContent)), omraadeliste);
     } else {
-            injectJs(erstatWrite(frameContent), omraadeliste);
+        injectJs(erstatWrite(frameContent), omraadeliste);
     }
     document.getElementById("redigeringsomraade").focus();
     document.getElementById("redigeringsomraade").setSelectionRange(0,0); 
     document.getElementById("redigeringsomraade").scrollTop = 0;
-
-}, false);
+    
+    }, false);
 
 
 document.getElementById("hentEksempel").addEventListener("change", function () {
@@ -204,6 +204,12 @@ document.getElementById("hentEksempel").addEventListener("change", function () {
 
 
 document.getElementById("redigeringsomraade").addEventListener('keydown', function (e) {
+    const iFrame = document.getElementById("outputomraade");
+    const innerDoc = iFrame.contentDocument || iFrame.contentWindow.document;
+    const documentwrite = innerDoc.getElementById("documentwrite");
+    const problemomraade = innerDoc.getElementById("problemomraade");
+    const noreactionKeys = [16,17,18,20,33,34,35,36,37,38,39,40];
+        
     const tabKeyCode = 9;
     if (e.keyCode === tabKeyCode) {
         const start = this.selectionStart;
@@ -221,6 +227,23 @@ document.getElementById("redigeringsomraade").addEventListener('keydown', functi
 
         e.preventDefault();
     }
+    
+    if ((problemomraade.innerText.length>0 || documentwrite.innerText.length>0) && (problemomraade.innerText.indexOf("{...}")===-1) && noreactionKeys.indexOf(e.keyCode)===-1) {    
+        window.frames['outputomraade'].location.replace("output.html");
+    }
+        
+}, false);
+
+document.getElementById("redigeringsomraade").addEventListener('keyup', function (e) {
+    const iFrame = document.getElementById("outputomraade");
+    const innerDoc = iFrame.contentDocument || iFrame.contentWindow.document;
+    const documentwrite = innerDoc.getElementById("documentwrite");
+    const problemomraade = innerDoc.getElementById("problemomraade");
+    
+    if (problemomraade.innerText.length===0 && documentwrite.innerText.length===0) {
+        problemomraade.innerText="{...}";
+    }
+
 }, false);
 
 document.getElementById("dan_lang_link").addEventListener('click', function (e) {
@@ -245,7 +268,8 @@ document.getElementById("rydkonsol_knap").addEventListener('click', function (e)
 }, false);
 
 document.getElementById("rydresultat_knap").addEventListener('click', function (e) {
-       window.frames['outputomraade'].location.replace("output.html");
+    window.frames['outputomraade'].location.replace("output.html");
+       // document.getElementById('outputomraade').contentWindow.location.reload();
 }, false);
 
 window.addEventListener("load", function (event) {
