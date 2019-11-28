@@ -168,8 +168,8 @@ document.getElementById("run_knap").addEventListener('click', function (event) {
         injectJs(erstatWrite(frameContent), omraadeliste);
     }
     document.getElementById("redigeringsomraade").focus();
-    document.getElementById("redigeringsomraade").setSelectionRange(0,0); 
-    document.getElementById("redigeringsomraade").scrollTop = 0;
+    // document.getElementById("redigeringsomraade").setSelectionRange(0,0); 
+    // document.getElementById("redigeringsomraade").scrollTop = 0;
     
     }, false);
 
@@ -256,11 +256,14 @@ document.getElementById("eng_lang_link").addEventListener('click', function (e) 
 
 document.getElementById("copy_knap").addEventListener('click', function (e) {
    const jsText = document.querySelector("#redigeringsomraade");
+   const cursorPos = jsText.value.slice(0, jsText.selectionStart).length;
    jsText.select();
    document.execCommand('copy');
    document.getSelection().removeAllRanges();
-   document.getElementById("redigeringsomraade").setSelectionRange(0,0); 
-   document.getElementById("redigeringsomraade").scrollTop = 0;
+   document.getElementById("redigeringsomraade").setSelectionRange(cursorPos,cursorPos);     
+   // document.getElementById("redigeringsomraade").scrollTop = 0;
+   document.getElementById("redigeringsomraade").focus();
+  
 }, false);
 
 document.getElementById("rydkonsol_knap").addEventListener('click', function (e) {
