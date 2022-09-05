@@ -8,7 +8,7 @@
 
 ## Kom i gang
 
-Du finder en online-udgave på http://jspad.mortenbonderup.eu. 
+Du finder en online-udgave på https://mortenbonderup.github.io/jspad/. 
 
 ## Bidragsydere
 
